@@ -11,6 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -40,5 +44,14 @@ public class ClienteController {
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente inserirCliente(@RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
+    }
+    @PutMapping(value="/{clienteId}")
+    public ResponseEntity<Cliente> atualizar(@PathVariable Long clienteId, @RequestBody Cliente cliente) {
+        if(!clienteRepository.existsById(clienteId)){
+            return ResponseEntity.notFound().build();
+        } else{
+            cliente.setId(clienteId);
+            return ResponseEntity.ok(clienteRepository.save(cliente));
+        }
     }
 }
