@@ -45,13 +45,23 @@ public class ClienteController {
     public Cliente inserirCliente(@RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
     }
+
     @PutMapping(value="/{clienteId}")
     public ResponseEntity<Cliente> atualizar(@PathVariable Long clienteId, @RequestBody Cliente cliente) {
-        if(!clienteRepository.existsById(clienteId)){
+        if (!clienteRepository.existsById(clienteId)){
             return ResponseEntity.notFound().build();
-        } else{
+        }
             cliente.setId(clienteId);
             return ResponseEntity.ok(clienteRepository.save(cliente));
+    }
+
+    @DeleteMapping(value="/{clienteId}")
+    public ResponseEntity<Void> deletar(@PathVariable Long clienteId) {
+        if (!clienteRepository.existsById(clienteId)) {
+            return ResponseEntity.notFound().build();
         }
+        clienteRepository.deleteById(clienteId);
+        //Retorna um 204 - Significa que a operação foi efetuada com sucesso(Sem nenhuma mensagem).
+        return ResponseEntity.noContent().build();
     }
 }
