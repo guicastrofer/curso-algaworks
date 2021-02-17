@@ -12,10 +12,10 @@ import javax.persistence.PersistenceContext;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
-
 
 
 @RestController
@@ -39,23 +39,23 @@ public class ClienteController {
         }
         return ResponseEntity.notFound().build();
     }
-    
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente inserirCliente(@Valid @RequestBody Cliente cliente) {
         return clienteRepository.save(cliente);
     }
 
-    @PutMapping(value="/{clienteId}")
+    @PutMapping(value = "/{clienteId}")
     public ResponseEntity<Cliente> atualizar(@Valid @PathVariable Long clienteId, @RequestBody Cliente cliente) {
-        if (!clienteRepository.existsById(clienteId)){
+        if (!clienteRepository.existsById(clienteId)) {
             return ResponseEntity.notFound().build();
         }
-            cliente.setId(clienteId);
-            return ResponseEntity.ok(clienteRepository.save(cliente));
+        cliente.setId(clienteId);
+        return ResponseEntity.ok(clienteRepository.save(cliente));
     }
 
-    @DeleteMapping(value="/{clienteId}")
+    @DeleteMapping(value = "/{clienteId}")
     public ResponseEntity<Void> deletar(@Valid @PathVariable Long clienteId) {
         if (!clienteRepository.existsById(clienteId)) {
             return ResponseEntity.notFound().build();
