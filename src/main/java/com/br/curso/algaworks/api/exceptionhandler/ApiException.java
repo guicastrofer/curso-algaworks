@@ -1,5 +1,8 @@
 package com.br.curso.algaworks.api.exceptionhandler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +20,24 @@ import java.util.ArrayList;
 
 //Toda exceção lançada na Controller chamará essa classe através da anotação abaixo.
 @ControllerAdvice
+
+
+
 public class ApiException extends ResponseEntityExceptionHandler {
+
+    @Autowired
+    MessageSource mesageSource;
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+
         var campos = new ArrayList<Problema.Campo>();
 
         for (ObjectError error : ex.getBindingResult().getAllErrors()) {
             String nome = ((FieldError) error).getField();
-            String menssagem = error.getDefaultMessage();
+            String menssagem = mesageSource.getMessage(error, LocaleContextHolder.getLocale());
 
             campos.add(new Problema.Campo(nome, menssagem));
         }
