@@ -1,4 +1,4 @@
-package com.br.curso.algaworks.repository;
+package com.br.curso.algaworks.domain.repository;
 
 import com.br.curso.algaworks.domain.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
