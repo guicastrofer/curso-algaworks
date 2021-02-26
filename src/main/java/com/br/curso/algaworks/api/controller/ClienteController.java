@@ -2,6 +2,7 @@ package com.br.curso.algaworks.api.controller;
 
 import com.br.curso.algaworks.domain.model.Cliente;
 import com.br.curso.algaworks.domain.repository.ClienteRepository;
+import com.br.curso.algaworks.domain.service.CadastroClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,10 @@ public class ClienteController {
 
     @Autowired
     ClienteRepository clienteRepository;
+
+    @Autowired
+    CadastroClienteService cadastroClienteService;
+
 
     @GetMapping
     public List<Cliente> listar() {
@@ -42,7 +47,7 @@ public class ClienteController {
     @ExceptionHandler({ InvocationTargetException.class })
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente inserirCliente(@Valid @RequestBody Cliente cliente) {
-        return clienteRepository.save(cliente);
+        return cadastroClienteService.salvar(cliente);
     }
 
     @PutMapping(value = "/{clienteId}")
@@ -51,7 +56,7 @@ public class ClienteController {
             return ResponseEntity.notFound().build();
         }
         cliente.setId(clienteId);
-        return ResponseEntity.ok(clienteRepository.save(cliente));
+        return ResponseEntity.ok(cadastroClienteService.salvar(cliente));
     }
 
     @DeleteMapping(value = "/{clienteId}")
@@ -59,7 +64,7 @@ public class ClienteController {
         if (!clienteRepository.existsById(clienteId)) {
             return ResponseEntity.notFound().build();
         }
-        clienteRepository.deleteById(clienteId);
+        cadastroClienteService.excluir(clienteId);
         //Retorna um 204 - Significa que a operação foi efetuada com sucesso(Sem nenhuma mensagem).
         return ResponseEntity.noContent().build();
     }
