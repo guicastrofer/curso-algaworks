@@ -21,6 +21,7 @@ public class OrdemServico {
     @ManyToOne
     private Cliente cliente;
     private BigDecimal preco;
+    private String descricao;
 
     @Enumerated(EnumType.STRING)
     private StatusOrdemServico status;
