@@ -18,14 +18,11 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/clientes")
 public class ClienteController {
-
-
     @Autowired
     ClienteRepository clienteRepository;
 
     @Autowired
     CadastroClienteService cadastroClienteService;
-
 
     @GetMapping
     public List<Cliente> listar() {

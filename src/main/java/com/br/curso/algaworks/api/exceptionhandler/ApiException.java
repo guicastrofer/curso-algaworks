@@ -20,9 +20,6 @@ import java.util.ArrayList;
 
 //Toda exceção lançada na Controller chamará essa classe através da anotação abaixo.
 @ControllerAdvice
-
-
-
 public class ApiException extends ResponseEntityExceptionHandler {
 
     @Autowired
@@ -31,8 +28,6 @@ public class ApiException extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
-
-
         var campos = new ArrayList<Problema.Campo>();
 
         for (ObjectError error : ex.getBindingResult().getAllErrors()) {
