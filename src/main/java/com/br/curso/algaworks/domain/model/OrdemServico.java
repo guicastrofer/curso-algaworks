@@ -1,6 +1,7 @@
 package com.br.curso.algaworks.domain.model;
 
 import com.br.curso.algaworks.domain.enums.StatusOrdemServico;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,12 +21,18 @@ public class OrdemServico {
 
     @ManyToOne
     private Cliente cliente;
+
     private BigDecimal preco;
     private String descricao;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Enumerated(EnumType.STRING)
     private StatusOrdemServico status;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime dataAbertura;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime dataFinalizacao;
 
     @Override
