@@ -1,5 +1,6 @@
 package com.br.curso.algaworks.domain.service;
 
+import com.br.curso.algaworks.api.model.OrdemServicoInput;
 import com.br.curso.algaworks.api.model.OrdemServicoModel;
 import com.br.curso.algaworks.domain.enums.StatusOrdemServico;
 import com.br.curso.algaworks.domain.exception.NegocioException;
@@ -32,12 +33,14 @@ public class GestaoOrdemServicoService {
         this.modelMapper = modelMapper;
     }
 
-    public OrdemServico criar(OrdemServico ordemServico) {
+    public OrdemServicoModel criar(OrdemServicoInput ordemServicoInput) {
+        OrdemServico ordemServico = toEntity(ordemServicoInput);
         var cliente = clienteRepository.findById(ordemServico.getCliente().getId())
                 .orElseThrow(() -> new NegocioException("Cliente não encontrado"));
         ordemServico.setStatus(StatusOrdemServico.ABERTA);
         ordemServico.setDataAbertura(OffsetDateTime.now());
-        return ordemServicoRepository.save(ordemServico);
+        ordemServico.setCliente(cliente);
+        return toModel(ordemServicoRepository.save(ordemServico));
     }
 
     public List<OrdemServicoModel> findAll() {
@@ -60,5 +63,9 @@ public class GestaoOrdemServicoService {
             return null;
         }
         return toModel(ordemServico.get());
+    }
+
+    public OrdemServico toEntity(OrdemServicoInput ordemServicoInput){
+        return modelMapper.map(ordemServicoInput, OrdemServico.class);
     }
 }

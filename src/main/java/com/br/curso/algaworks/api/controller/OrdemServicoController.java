@@ -1,5 +1,6 @@
 package com.br.curso.algaworks.api.controller;
 
+import com.br.curso.algaworks.api.model.OrdemServicoInput;
 import com.br.curso.algaworks.api.model.OrdemServicoModel;
 import com.br.curso.algaworks.domain.model.OrdemServico;
 import com.br.curso.algaworks.domain.repository.OrdemServicoRepository;
@@ -30,8 +31,8 @@ public class OrdemServicoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrdemServico criar(@Valid @RequestBody OrdemServico ordemServico){
-        return gestaoOrdemServicoService.criar(ordemServico);
+    public OrdemServicoModel criar(@Valid @RequestBody OrdemServicoInput ordemServicoInput){
+        return gestaoOrdemServicoService.criar(ordemServicoInput);
     }
     @GetMapping
     public List<OrdemServicoModel> listarClientes() {

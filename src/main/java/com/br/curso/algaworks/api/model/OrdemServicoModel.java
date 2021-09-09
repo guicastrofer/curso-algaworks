@@ -9,7 +9,6 @@ import java.time.OffsetDateTime;
 @Data
 public class OrdemServicoModel {
     private Long id;
-    private String nomeCliente;
     private ClienteResumoModel cliente;
     private String descricao;
     private BigDecimal preco;
