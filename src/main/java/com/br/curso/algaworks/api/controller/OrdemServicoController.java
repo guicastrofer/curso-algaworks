@@ -1,5 +1,6 @@
 package com.br.curso.algaworks.api.controller;
 
+import com.br.curso.algaworks.api.model.OrdemServicoModel;
 import com.br.curso.algaworks.domain.model.OrdemServico;
 import com.br.curso.algaworks.domain.repository.OrdemServicoRepository;
 import com.br.curso.algaworks.domain.service.GestaoOrdemServicoService;
@@ -16,13 +17,13 @@ import java.util.Optional;
 @RequestMapping("/ordens-servico")
 public class OrdemServicoController {
 
-    private final GestaoOrdemServicoService gestaoOrdemServico;
+    private final GestaoOrdemServicoService gestaoOrdemServicoService;
 
     private final OrdemServicoRepository ordemServicoRepository;
 
 @Autowired
-    public OrdemServicoController(GestaoOrdemServicoService gestaoOrdemServico, OrdemServicoRepository ordemServicoRepository) {
-        this.gestaoOrdemServico = gestaoOrdemServico;
+    public OrdemServicoController(GestaoOrdemServicoService gestaoOrdemServicoService, OrdemServicoRepository ordemServicoRepository) {
+        this.gestaoOrdemServicoService = gestaoOrdemServicoService;
         this.ordemServicoRepository = ordemServicoRepository;
     }
 
@@ -30,20 +31,20 @@ public class OrdemServicoController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public OrdemServico criar(@Valid @RequestBody OrdemServico ordemServico){
-        return gestaoOrdemServico.criar(ordemServico);
+        return gestaoOrdemServicoService.criar(ordemServico);
     }
     @GetMapping
-    public List<OrdemServico> listarClientes() {
-        return ordemServicoRepository.findAll();
+    public List<OrdemServicoModel> listarClientes() {
+        return gestaoOrdemServicoService.findAll();
     }
 
     @GetMapping("/{ordemServicoId}")
-    public ResponseEntity<OrdemServico> buscar(@PathVariable Long ordemServicoId) {
-        Optional<OrdemServico> ordemServico = ordemServicoRepository.findById(ordemServicoId);
-        if (ordemServico.isPresent()) {
-            return ResponseEntity.ok(ordemServico.get());
+    public ResponseEntity<OrdemServicoModel> buscar(@PathVariable Long ordemServicoId) {
+        var ordemServico = gestaoOrdemServicoService.findById(ordemServicoId);
+        if (ordemServico == null) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(ordemServico);
     }
 
 }
