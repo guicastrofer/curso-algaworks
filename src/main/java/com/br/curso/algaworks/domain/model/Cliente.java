@@ -1,14 +1,11 @@
 package com.br.curso.algaworks.domain.model;
 
-import com.br.curso.algaworks.domain.ValidationGroups;
 import lombok.Data;
-import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
@@ -18,7 +15,6 @@ import java.util.Objects;
 public class Cliente {
 
     @Id
-    @NotNull(groups = ValidationGroups.ClienteId.class)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     //Estratégia para gerar o autoincrement.
     private Long id;
