@@ -45,7 +45,7 @@ public class OrdemServicoController {
         }
         return ResponseEntity.ok(ordemServico);
     }
-
+    /* Used when you have to execute once */
     @PutMapping("/{ordemServicoId}/finalizacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void finalizar(@PathVariable Long ordemServicoId) {
