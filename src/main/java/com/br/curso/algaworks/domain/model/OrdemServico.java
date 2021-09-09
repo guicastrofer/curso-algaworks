@@ -1,6 +1,8 @@
 package com.br.curso.algaworks.domain.model;
 
+import com.br.curso.algaworks.api.model.Comentario;
 import com.br.curso.algaworks.domain.enums.StatusOrdemServico;
+import com.br.curso.algaworks.domain.exception.NegocioException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +12,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -39,6 +43,9 @@ public class OrdemServico {
 
     private OffsetDateTime dataFinalizacao;
 
+    @OneToMany(mappedBy = "ordemServico")
+    private List<Comentario> comentarios = new ArrayList<>();
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -51,4 +58,13 @@ public class OrdemServico {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+    public void finalizar() {
+        if(!getStatus().equals(StatusOrdemServico.ABERTA)) {
+            throw new NegocioException("Ordem de serviço não pode ser finalizada.");
+        }
+        setStatus(StatusOrdemServico.FINALIZADA);
+        setDataFinalizacao(OffsetDateTime.now());
+    }
+
 }

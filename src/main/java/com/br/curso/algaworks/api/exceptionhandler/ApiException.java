@@ -1,6 +1,7 @@
 package com.br.curso.algaworks.api.exceptionhandler;
 
-import com.br.curso.algaworks.domain.exception.NotFoundException;
+import com.br.curso.algaworks.domain.exception.EntidadeNaoEncontradaException;
+import com.br.curso.algaworks.domain.exception.NegocioException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -43,6 +44,26 @@ public class ApiException extends ResponseEntityExceptionHandler {
                 + "Faça o preenchimento correto e tente novamente");
         problema.setDataHora(OffsetDateTime.now());
         problema.setCampos(campos);
-        return super.handleExceptionInternal(ex, problema, headers, status, request);
+        return handleExceptionInternal(ex, problema, headers, status, request);
+    }
+
+    @ExceptionHandler(NegocioException.class)
+    public ResponseEntity<Object> handlerNegocio(NegocioException ex, WebRequest request) {
+        var status = HttpStatus.BAD_REQUEST;
+        var problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(ex.getMessage());
+        problema.setDataHora(OffsetDateTime.now());
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(EntidadeNaoEncontradaException.class)
+    public ResponseEntity<Object> handlerNegocio(EntidadeNaoEncontradaException ex, WebRequest request) {
+        var status = HttpStatus.NOT_FOUND;
+        var problema = new Problema();
+        problema.setStatus(status.value());
+        problema.setTitulo(ex.getMessage());
+        problema.setDataHora(OffsetDateTime.now());
+        return handleExceptionInternal(ex, problema, new HttpHeaders(), status, request);
     }
 }

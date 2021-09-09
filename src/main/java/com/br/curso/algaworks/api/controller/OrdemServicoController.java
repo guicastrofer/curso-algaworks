@@ -2,7 +2,6 @@ package com.br.curso.algaworks.api.controller;
 
 import com.br.curso.algaworks.api.model.OrdemServicoInput;
 import com.br.curso.algaworks.api.model.OrdemServicoModel;
-import com.br.curso.algaworks.domain.model.OrdemServico;
 import com.br.curso.algaworks.domain.repository.OrdemServicoRepository;
 import com.br.curso.algaworks.domain.service.GestaoOrdemServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/ordens-servico")
@@ -22,7 +20,7 @@ public class OrdemServicoController {
 
     private final OrdemServicoRepository ordemServicoRepository;
 
-@Autowired
+    @Autowired
     public OrdemServicoController(GestaoOrdemServicoService gestaoOrdemServicoService, OrdemServicoRepository ordemServicoRepository) {
         this.gestaoOrdemServicoService = gestaoOrdemServicoService;
         this.ordemServicoRepository = ordemServicoRepository;
@@ -46,6 +44,12 @@ public class OrdemServicoController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(ordemServico);
+    }
+
+    @PutMapping("/{ordemServicoId}/finalizacao")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void finalizar(@PathVariable Long ordemServicoId) {
+        gestaoOrdemServicoService.finalizar(ordemServicoId);
     }
 
 }
